@@ -1,6 +1,7 @@
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
     <n-layout has-sider position="absolute" style="height: 100vh">
+      
       <!-- Sidebar -->
       <n-layout-sider
         bordered
@@ -23,6 +24,7 @@
           :collapsed="collapsed"
           :collapsed-width="64"
           :options="menuOptions"
+          :indent="24"
           :default-expand-all="false"
           :value="activeKey"
           @update:value="onMenuSelect"
@@ -33,13 +35,29 @@
       <!-- Main Layout -->
       <n-layout>
         <!-- Header -->
-        <n-layout-header class="header">
-          <div class="header-content">
-            <n-button quaternary circle @click="toggleCollapsed">
-              <n-icon :component="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
-            </n-button>
-            <div class="header-right">Welcome Admin</div>
-          </div>
+        <n-layout-header class="header" :height="60">
+          <n-grid
+            :cols="{ xs: 1, sm: 2, md: 3, lg: 4 }"
+            :y-gap="30"
+          >
+            <n-flex align="center">
+              <n-button quaternary circle @click="toggleCollapsed">
+                <n-icon :component="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
+              </n-button>
+
+              <n-breadcrumb separator=" / ">
+                <n-breadcrumb-item>
+                  <n-icon><HomeOutlined /></n-icon>
+                  <span style="margin-left: 4px;">Home</span>
+                </n-breadcrumb-item>
+
+                <n-breadcrumb-item>
+                  <n-icon><DashboardOutlined /></n-icon>
+                  <span style="margin-left: 4px;">Account</span>
+                </n-breadcrumb-item>
+              </n-breadcrumb>
+            </n-flex>
+          </n-grid>
         </n-layout-header>
 
         <!-- Main Content -->
@@ -61,10 +79,12 @@ import {
   NLayoutContent,
   NConfigProvider,
   NButton,
-  NIcon
+  NIcon,
+  NBreadcrumb, 
+  NBreadcrumbItem,
+  NFlex
 } from 'naive-ui'
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@vicons/antd'
-import { HomeOutline, PeopleOutline } from '@vicons/ionicons5'
+import { HomeOutlined, UsergroupDeleteOutlined, MenuFoldOutlined, MenuUnfoldOutlined, DashboardOutlined, AppstoreAddOutlined, NodeCollapseOutlined } from '@vicons/antd'
 import { useRouter, useRoute } from 'vue-router'
 
 const collapsed = ref(false)
@@ -85,20 +105,53 @@ const menuOptions = [
   {
     label: 'Dashboard',
     key: '/dashboard',
-    icon: () => h(HomeOutline),
-    props: {
-      style: {
-        paddingLeft: "24px"
-      }
-    }
+    icon: () => h(DashboardOutlined, {width: '16px', height: '16px'}),
   },
   {
     label: 'Users',
     key: 'users',
-    icon: () => h(PeopleOutline),
+    icon: () => h(UsergroupDeleteOutlined, {width: '16px', height: '16px'}),
     children: [
       { label: 'All Users', key: '/users/all' },
       { label: 'Add User', key: '/users/create' }
+    ]
+  }
+  ,
+  {
+    label: 'Products',
+    key: 'products',
+    icon: () => h(AppstoreAddOutlined, {width: '16px', height: '16px'}),
+    children: [
+      { label: 'All Products', key: '/products/all' },
+      { label: 'Add Products', key: '/products/create' },
+      { label: 'View Products', key: '/products/view' },
+      { label: 'Edit Products', key: '/products/edit' },
+      { label: 'Delete Products', key: '/products/delete' },
+    ]
+  }
+  ,
+  {
+    label: 'Articles',
+    key: 'articles',
+    icon: () => h(NodeCollapseOutlined, {width: '16px', height: '16px'}),
+    children: [
+      { label: 'All Articles', key: '/articles/all' },
+      { label: 'Add Articles', key: '/articles/create' },
+      { label: 'View Articles', key: '/articles/view' },
+      { label: 'Edit Articles', key: '/articles/edit' },
+      { label: 'Delete Articles', key: '/articles/delete' },
+    ]
+  },
+  {
+    label: 'Media',
+    key: 'medias',
+    icon: () => h(NodeCollapseOutlined, {width: '16px', height: '16px'}),
+    children: [
+      { label: 'All Media', key: '/medias/all' },
+      { label: 'Add Media', key: '/medias/create' },
+      { label: 'View Media', key: '/medias/view' },
+      { label: 'Edit Media', key: '/medias/edit' },
+      { label: 'Delete Media', key: '/medias/delete' },
     ]
   }
 ]
@@ -151,7 +204,7 @@ const themeOverrides = {
 .header-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: left;
   height: 100%;
 }
 .main-content {
