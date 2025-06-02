@@ -15,10 +15,12 @@
         @expand="collapsed = false"
         class="aside"
       >
-        <div class="logo-box">
-          <img src="../assets/logo-Co29R00y.png" alt="logo" class="logo" />
-          <span v-if="!collapsed" class="logo-text">My Admin</span>
-        </div>
+        <n-flex justify="center" class="py-[16px] h-[64px] whitespace-nowrap flex-nowrap" align="center" style="gap: 0; flex-flow: nowrap">
+          <n-image :src="logo" :preview-disabled="false" height="40" class="w-[32px]" />
+          <h1 v-if="!collapsed" class="ml-[12px] font-bold text-[18px] whitespace-nowrap">Admin Plus</h1>
+        </n-flex>
+
+
         <n-scrollbar trigger="hover" style="height: 100%; overflow: hidden;">
         <n-menu
           :collapsed="collapsed"
@@ -35,34 +37,29 @@
       <!-- Main Layout -->
       <n-layout>
         <!-- Header -->
-        <n-layout-header class="header" :height="60">
-          <n-grid
-            :cols="{ xs: 1, sm: 2, md: 3, lg: 4 }"
-            :y-gap="30"
-          >
-            <n-flex align="center">
-              <n-button quaternary circle @click="toggleCollapsed">
-                <n-icon :component="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
-              </n-button>
+        <n-layout-header>
+          <n-flex align="center" class="py-2">
+            <n-button quaternary circle @click="toggleCollapsed">
+              <n-icon :component="collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
+            </n-button>
 
-              <n-breadcrumb separator=" / ">
-                <n-breadcrumb-item>
-                  <n-icon><HomeOutlined /></n-icon>
-                  <span style="margin-left: 4px;">Home</span>
-                </n-breadcrumb-item>
+            <n-breadcrumb separator=" / ">
+              <n-breadcrumb-item>
+                <n-icon><HomeOutlined /></n-icon>
+                <span style="margin-left: 4px;">Home</span>
+              </n-breadcrumb-item>
 
-                <n-breadcrumb-item>
-                  <n-icon><DashboardOutlined /></n-icon>
-                  <span style="margin-left: 4px;">Account</span>
-                </n-breadcrumb-item>
-              </n-breadcrumb>
-            </n-flex>
-          </n-grid>
+              <n-breadcrumb-item>
+                <n-icon><DashboardOutlined /></n-icon>
+                <span style="margin-left: 4px;">Account</span>
+              </n-breadcrumb-item>
+            </n-breadcrumb>
+          </n-flex>
         </n-layout-header>
 
         <!-- Main Content -->
         <n-layout-content class="main-content">
-          <router-view />
+          <router-view />          
         </n-layout-content>
       </n-layout>
     </n-layout>
@@ -82,7 +79,8 @@ import {
   NIcon,
   NBreadcrumb, 
   NBreadcrumbItem,
-  NFlex
+  NFlex,
+  NImage
 } from 'naive-ui'
 import { HomeOutlined, UsergroupDeleteOutlined, MenuFoldOutlined, MenuUnfoldOutlined, DashboardOutlined, AppstoreAddOutlined, NodeCollapseOutlined } from '@vicons/antd'
 import { useRouter, useRoute } from 'vue-router'
@@ -92,8 +90,16 @@ const router = useRouter()
 const route = useRoute()
 const activeKey = ref(route.path)
 
+import logo from '@/assets/logo-Co29R00y.png'
+
 const toggleCollapsed = () => {
-  collapsed.value = !collapsed.value
+  if (!val) {
+    setTimeout(() => {
+      collapsed.value = true
+    }, 1000) // Hiển thị sau 300ms
+  } else {
+    collapsed.value = false
+  }
 }
 
 const onMenuSelect = (key) => {
@@ -158,85 +164,23 @@ const menuOptions = [
 
 const themeOverrides = {
   Layout: {
-    siderColor: '#ffffff',        // Nền trắng
-    siderBorderColor: '#f0f0f0'   // Viền sáng nếu muốn
+    siderColor: '#ffffff',
+    siderBorderColor: '#f0f0f0'
   },
   Menu: {
-    itemTextColor: '#333',                // Màu chữ
-    itemIconColor: '#666',
-    itemTextColorHover: '#000',
-    itemColorHover: '#f5f5f5',
-    itemColorActive: '#e6f4ea',
-    itemTextColorActive: '#18a058'
+    itemColorHover: '#eaf3fd',           // Background on hover
+    itemTextColor: '#333',               // Default text
+    itemIconColor: '#666',               // Default icon
+    itemTextColorHover: '#2080f0',       // Text on hover (primary)
+    itemIconColorHover: '#2080f0',       // Icon on hover
+    itemColorActive: '#eaf3fd',          // Background on active
+    itemTextColorActive: '#2080f0',      // Text on active
+    itemIconColorActive: '#2080f0',      // Icon on active
+    itemIconColorActiveHover: '#2080f0',
+    itemTextColorActiveHover: '#2080f0',
   }
 }
 </script>
 
 <style>
-.aside {
-  background-color: #ffffff;
-  color: #333;
-  border-right: 1px solid #f0f0f0;
-}
-.logo-box {
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px;
-  /* background-color: #18a058; */
-  font-size: 16px;
-  font-weight: bold;
-  /* color: white; */
-}
-.logo {
-  width: 24px;
-  margin-right: 8px;
-}
-.logo-text {
-  white-space: nowrap;
-}
-.header {
-  background: white;
-  padding: 0 16px;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-}
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  height: 100%;
-}
-.main-content {
-  padding: 16px;
-  background: #f5f5f5;
-  height: 100%;
-  overflow-y: auto;
-}
-
-/*  */
-.n-scrollbar-rail {
-  background-color: #f0f0f0; /* Track color */
-}
-.n-scrollbar-rail__vertical .n-scrollbar-thumb {
-  background-color: #18a058; /* Thumb color */
-  border-radius: 4px;
-}
-.n-scrollbar-rail__vertical:hover .n-scrollbar-thumb {
-  background-color: #0f8c4d;
-}
-/* Scrollbar ẩn mặc định */
-.aside .n-scrollbar-rail {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-/* Khi hover vào aside thì hiện scrollbar */
-.aside:hover .n-scrollbar-rail {
-  opacity: 1;
-}
-.n-scrollbar-rail__vertical .n-scrollbar-thumb {
-  background-color: #18a058;
-  border-radius: 4px;
-}
 </style>
