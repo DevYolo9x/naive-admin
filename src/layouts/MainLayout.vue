@@ -34,7 +34,7 @@
       </n-layout-sider>
 
       <!-- Main Layout -->
-      <n-layout>
+      <n-layout style="background: #f7fafc;">
         <!-- Header -->
         <n-layout-header>
           <n-flex align="center" class="py-2 px-3">
@@ -64,7 +64,7 @@
         </n-layout-header>
 
         <!-- Main Content -->
-        <n-layout-content class="px-3">
+        <n-layout-content class="px-3 mt-4" style="background: #f7fafc;">
           <router-view />          
         </n-layout-content>
       </n-layout>
